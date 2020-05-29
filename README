@@ -1,0 +1,3 @@
+source activate fiNaL
+
+export DESIMODEL=/global/common/software/desi/cori/desiconda/20190804-1.3.0-spec/code/desimodel/master
