@@ -20,6 +20,8 @@ def nopower(k):
 nbar      = 1.e-3
 
 cat       = LogNormalCatalog(Plin=Plin, nbar=nbar, BoxSize=1000., Nmesh=256, bias=b1, seed=42, cosmo=cosmo, redshift=redshift)
+
+# Mesh normalised as (n / <n> ) or (1 + delta).
 rmesh     = cat.to_mesh(compensated=True, window='cic', position='Position', interlaced=False)
 rmesh     = rmesh.compute()
 
