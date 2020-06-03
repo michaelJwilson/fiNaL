@@ -90,6 +90,7 @@ pl.axhline(1. / nbar, xmin=0.0, xmax=1.0, c='k', lw=0.1)
 
 pl.loglog(kh, Pk, label=r'$(z, m, b, \bar n) = ({}, {}, {}, {:.1e})$'.format(zz, mlim, b, nbar))
 pl.loglog(kh, b * b * plin[-zindex,:]) 
+pl.loglog(kh,         plin[-zindex,:])
 
 pl.xlabel(r'$k \ [h/{\rm Mpc}]$')
 pl.ylabel(r'$P(k)$')
