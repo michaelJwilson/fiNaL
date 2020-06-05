@@ -29,7 +29,6 @@ Om             = (omch2 + ombh2) / h /h
 
 zs             = np.arange(zmax, 0.0, -dz)
 
-
 # Call CAMB.
 pars           = camb.CAMBparams()
 
