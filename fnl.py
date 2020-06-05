@@ -4,42 +4,36 @@ import  matplotlib.pyplot  as      plt
 
 from    params             import  *
 from    growth             import  Dz
+from    linearPk           import  Plin
+from    samples            import  samples
 
 
-# eBOSS QSO. 
-# b, zz        = 2.58, 1.54
-# nbar         = 1.e-4
-
-# Linear today. 
-# b, zz        = 2.58, 1.54 
-# nbar         = 1.e-2
-
-# Goldrush bright.
-mlim           = 24.0
-b, zz          = 6.06, 4.00
-nbar           = 1.e-4
-
-# Goldrush faint.
-# mlim         = 25.5
-# b, zz        = 4.07, 4.00
-# nbar         = 1.e-2
-
-ks, k2T        = np.loadtxt('k2Transfers.txt', unpack=True)
+ks, k2T = np.loadtxt('dat/k2Transfers.txt', unpack=True)
 
 def dbk(b, z):
-    return  3. * (b - p) * dc * Om * H0**2 / c /c / k2T / Dz(zz)
+    return  3. * (b - p) * dc * Om * H0**2 / c /c / k2T / Dz(z)
 
 def pk_fnl(b, z, fnl):
+    _, PP = Plin(z)
+
     # Eqn. (5) of https://arxiv.org/pdf/0807.1770.pdf; requires linear DM power spectrum.
-    return  Plin(z)  * (b + dbk(b,z) * fnl)**2.
+    return  PP * (b + dbk(b,z) * fnl)**2.
 
 
 if __name__ == '__main__':
-    pl.axhline(1. / nbar, xmin=0.0, xmax=1.0, c='k', lw=0.1)
+    tracer = 'GRUSH24'
 
-    pl.loglog(kh, Pk, label=r'$(z, m, b, \bar n) = ({}, {}, {}, {:.1e})$'.format(zz, mlim, b, nbar))
-    pl.loglog(kh, b * b * plin[-zindex,:]) 
-    pl.loglog(kh,         plin[-zindex,:])
+    for k, v in samples[tracer].items():
+        exec(k+'=v')
+
+    _, PP = Plin(z)
+    Pk    = pk_fnl(b, z, fnl)
+        
+    pl.axhline(1. / nz, xmin=0.0, xmax=1.0, c='k', lw=0.1)
+
+    pl.loglog(ks, Pk, label=r'${} (z, b, \bar n) = ({}, {}, {:.1e})$'.format(tracer, z, b, nz))
+    pl.loglog(ks, b * b * PP) 
+    pl.loglog(ks,         PP)
 
     pl.xlabel(r'$k \ [h/{\rm Mpc}]$')
     pl.ylabel(r'$P(k)$')
@@ -51,6 +45,6 @@ if __name__ == '__main__':
 
     plt.tight_layout()
 
-    pl.savefig('pk_fnl.pdf')
-
+    pl.savefig('plots/pk_fnl.pdf')
+    
     print('\n\nDone.\n\n')
