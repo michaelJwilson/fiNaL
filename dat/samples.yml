@@ -1,14 +1,24 @@
-ebossQSO:                                                                                                                                                                                                                                
+ebossQSO:
  b: 2.58
  z: 1.54                                                                                                                                                                                                                 
  nz: 1.e-4                                                                                                                                                                                                                      
 
+ebossMatter:
+ b: 1.00
+ z: 1.54
+ nz: 100.
+ 
 GRUSH24:
  b: 6.06
  z: 4.00
- nz: 1.e-4
+ nz: 3.3e-6
 
 GRUSH25.5:
  b: 4.07
  z: 4.00
- nz: 1.e-2
+ nz: 2.e-4
+
+PAU:
+ b: 1.4
+ z: 0.6
+ nz: 1.e-3

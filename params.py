@@ -14,7 +14,7 @@ dz             = 0.05
 
 zs             = np.arange(zmax, 0.0, -dz)
 
-V              = 1.e9           # Cubic Gpc/h [(Mpc/h)^3].  
+V              = 4.186e10       # [(Mpc/h)^3].  
 
 H0             = 67.6           # [km/s/Mpc].                                                                                                                                                                                               
 h              = H0 / 100.
