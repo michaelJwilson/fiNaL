@@ -3,12 +3,62 @@ H0: 67.6
 Om: 0.31511501698119815
 c: 299790.0
 dz: 0.05
+fnl: 20.0
 h: 0.6759999999999999
 mnu: 0.0
+np: !!python/module:numpy ''
 ns: 0.965
 ombh2: 0.022
 omch2: 0.122
 omk: 0.0
+p: 1.0
 r: 0.0
 tau: 0.06
 zmax: 7.0
+zs: !!python/object/apply:numpy.core.multiarray._reconstruct
+  args:
+  - !!python/name:numpy.ndarray ''
+  - !!python/tuple
+    - 0
+  - !!binary |
+    Yg==
+  state: !!python/tuple
+  - 1
+  - !!python/tuple
+    - 140
+  - !!python/object/apply:numpy.dtype
+    args:
+    - f8
+    - 0
+    - 1
+    state: !!python/tuple
+    - 3
+    - <
+    - null
+    - null
+    - null
+    - -1
+    - -1
+    - 0
+  - false
+  - !!binary |
+    AAAAAAAAHEDNzMzMzMwbQJqZmZmZmRtAZ2ZmZmZmG0A0MzMzMzMbQAEAAAAAABtAzszMzMzMGkCb
+    mZmZmZkaQGhmZmZmZhpANTMzMzMzGkACAAAAAAAaQM/MzMzMzBlAnJmZmZmZGUBpZmZmZmYZQDYz
+    MzMzMxlAAwAAAAAAGUDQzMzMzMwYQJ2ZmZmZmRhAamZmZmZmGEA3MzMzMzMYQAQAAAAAABhA0czM
+    zMzMF0CemZmZmZkXQGtmZmZmZhdAODMzMzMzF0AFAAAAAAAXQNLMzMzMzBZAn5mZmZmZFkBsZmZm
+    ZmYWQDkzMzMzMxZABgAAAAAAFkDTzMzMzMwVQKCZmZmZmRVAbWZmZmZmFUA6MzMzMzMVQAcAAAAA
+    ABVA1MzMzMzMFEChmZmZmZkUQG5mZmZmZhRAOzMzMzMzFEAIAAAAAAAUQNXMzMzMzBNAopmZmZmZ
+    E0BvZmZmZmYTQDwzMzMzMxNACQAAAAAAE0DWzMzMzMwSQKOZmZmZmRJAcGZmZmZmEkA9MzMzMzMS
+    QAoAAAAAABJA18zMzMzMEUCkmZmZmZkRQHFmZmZmZhFAPjMzMzMzEUALAAAAAAARQNjMzMzMzBBA
+    pZmZmZmZEEByZmZmZmYQQD8zMzMzMxBADAAAAAAAEECymZmZmZkPQEwzMzMzMw9A5szMzMzMDkCA
+    ZmZmZmYOQBoAAAAAAA5AtJmZmZmZDUBOMzMzMzMNQOjMzMzMzAxAgmZmZmZmDEAcAAAAAAAMQLaZ
+    mZmZmQtAUDMzMzMzC0DqzMzMzMwKQIRmZmZmZgpAHgAAAAAACkC4mZmZmZkJQFIzMzMzMwlA7MzM
+    zMzMCECGZmZmZmYIQCAAAAAAAAhAupmZmZmZB0BUMzMzMzMHQO7MzMzMzAZAiGZmZmZmBkAiAAAA
+    AAAGQLyZmZmZmQVAVjMzMzMzBUDwzMzMzMwEQIpmZmZmZgRAJAAAAAAABEC+mZmZmZkDQFgzMzMz
+    MwNA8szMzMzMAkCMZmZmZmYCQCYAAAAAAAJAwJmZmZmZAUBaMzMzMzMBQPTMzMzMzABAjmZmZmZm
+    AEAoAAAAAAAAQIQzMzMzM/8/uGZmZmZm/j/smZmZmZn9PyDNzMzMzPw/VAAAAAAA/D+IMzMzMzP7
+    P7xmZmZmZvo/8JmZmZmZ+T8kzczMzMz4P1gAAAAAAPg/jDMzMzMz9z/AZmZmZmb2P/SZmZmZmfU/
+    KM3MzMzM9D9cAAAAAAD0P5AzMzMzM/M/xGZmZmZm8j/4mZmZmZnxPyzNzMzMzPA/YAAAAAAA8D8o
+    Z2ZmZmbuP5DNzMzMzOw/+DMzMzMz6z9gmpmZmZnpP8gAAAAAAOg/MGdmZmZm5j+YzczMzMzkPwA0
+    MzMzM+M/aJqZmZmZ4T/QAAAAAADgP3DOzMzMzNw/QJuZmZmZ2T8QaGZmZmbWP+A0MzMzM9M/sAEA
+    AAAA0D8AnZmZmZnJP6A2MzMzM8M/gKCZmZmZuT+Ap5mZmZmpPw==

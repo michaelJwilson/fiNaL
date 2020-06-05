@@ -1,17 +1,26 @@
 import  yaml
+import  numpy as np
 
 
+# https://camb.readthedocs.io/en/latest/CAMBdemo.html      
 As             = 2.e-9
 ns             = 0.965
 r              = 0.0
 
+fnl            = 20.00
+
 zmax           = 7.0
 dz             = 0.05
+
+zs             = np.arange(zmax, 0.0, -dz)
 
 H0             = 67.6           # [km/s/Mpc].                                                                                                                                                                                               
 h              = H0 / 100.
 
-c              = 2.9979 * 1.e5  # [km/s].                                                                                                                                                                                                   
+c              = 2.9979 * 1.e5  # [km/s].
+
+p              = 1.000          # [1., 1.6] 
+
 omk            = 0.0
 ombh2          = 0.022
 omch2          = 0.122

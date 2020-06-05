@@ -50,13 +50,13 @@ Ds             = results.get_sigma8() / results.get_sigma8()[0] / (1. + zs[0])
 Dz             = interp1d(zs, Ds, kind='linear', copy=True, bounds_error=True)
 
 # Save growth rate to file. 
-np.savetxt('growth.txt', np.c_[zs, Ds], header='Linear growth rate;  Normalised to (1+z) in matter domination.')
+np.savetxt('dat/growth.txt', np.c_[zs, Ds], header='Linear growth rate;  Normalised to (1+z) in matter domination.')
 
 # [h/Mpc].
 k2Ts           = [kh]
 Ps             = [kh]
 
-rate           = 20
+rate           = 5
 
 # Transfer function calc. with k. 
 for zindex, zz in enumerate(zs):
@@ -86,12 +86,13 @@ for zindex, zz in enumerate(zs):
     Pk         = plin[-zindex,:]
     Ps.append(Pk.tolist())
 
+    
 k2Ts = np.array(k2Ts).T
 Ps   = np.array(Ps).T
 
 hdr  = 'k'.ljust(23) + ''.join(['k2T(z={:.2f})'.format(zz).ljust(25) for zz in zs[::rate]])
-np.savetxt('k2Transfers.txt', k2Ts, header=hdr)
+np.savetxt('dat/k2Transfers.txt', k2Ts, header=hdr)
 
 hdr  = 'k'.ljust(23) + ''.join(['Lin. Pk(z={:.2f})'.format(zz).ljust(25) for zz in zs[::rate]])
-np.savetxt('Pks.txt',         Ps,   header=hdr)
+np.savetxt('dat/Pks.txt',         Ps,   header=hdr)
     
