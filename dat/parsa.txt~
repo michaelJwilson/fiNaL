@@ -1,0 +1,5 @@
+# Evolution of UV luminosity function, https://arxiv.org/pdf/1507.05629.pdf; Phi* converted from per cubic Mpc to cubic (Mpc/h) assuming h=0.67.
+# z	   M*         Phi*         alpha
+1.9	   -19.68     0.02327	   -1.32
+2.8	   -20.20     0.01762	   -1.31
+3.8	   -20.71     0.00666	   -1.43

@@ -1,7 +1,8 @@
-import numpy as np
-import pylab as pl
+import numpy             as np
+import pylab             as pl
+import matplotlib.pyplot as plt
 
-from   scipy.integrate import quad
+from   scipy.integrate   import quad
 
 
 alphas = np.arange(-2.0, -1.0, 0.2)
@@ -25,7 +26,7 @@ for alpha in alphas:
       
     ys = np.array(ys)
 
-    pl.loglog(xmins, ys, label=r'$\alpha={:.1f}$'.format(alpha))
+    pl.semilogy(xmins, ys, label=r'$\alpha={:.1f}$'.format(alpha))
 
 
 output = np.array(output).T
@@ -35,8 +36,14 @@ header += ''.join(['Phi(alpha={:.1f})/Phi*'.format(a).ljust(25) for a in alphas]
 
 np.savetxt('dat/schechters.txt', output, header=header)
     
-#pl.xlabel(r'$L / L_*$')
-#pl.ylabel(r'$\tilde \Phi / \Phi_*$')
+pl.xlabel(r'$L_{\rm lim} / L_*$')
+pl.ylabel(r'$\tilde \Phi / \Phi_*$')
 
-#pl.legend(frameon=False)
-#pl.savefig('plots/schechters.png')
+pl.xlim(0.1, 5.0)
+pl.ylim(1.e-3, 10.)
+
+pl.legend(frameon=False)
+
+plt.tight_layout()
+
+pl.savefig('plots/schechters.png')
