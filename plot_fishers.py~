@@ -1,0 +1,41 @@
+import glob
+import pylab              as     pl
+import numpy              as     np 
+import matplotlib.pyplot  as     plt
+
+from   get_yaml           import get_yaml
+
+
+redshift = 2.0
+results  = glob.glob('fishers/{:.1f}/*'.format(redshift))
+
+vmin     =   0.0
+vmax     =   3.0
+
+kmin     = 0.01
+
+for result in results:
+    result = get_yaml(result)
+    
+    if result['kmin'] == kmin:
+      M1     = result['lomass']['M']
+      M2     = result['himass']['M']
+
+      sigf   = result['sigma_fnl'] / 1.e-7
+
+      # print('{: 6.1f} \t {: 6.1f} \t {:.3f}'.format(M1, M2, sigf))
+      
+      pl.scatter(np.array([M1]), np.array([M2]), c=np.array([sigf]), vmin=vmin, vmax=vmax, s=10, cmap='jet')
+
+pl.xlabel(r'$M_1 \ [10^{10} \ M_{\odot}]$')
+pl.ylabel(r'$M_2 \ [10^{10} \ M_{\odot}]$')
+
+pl.colorbar(label=r'$\sigma_{f{\rm NL}}$')
+
+pl.xlim(0.9, 1001.)
+
+pl.xscale('log')
+pl.yscale('log')
+
+pl.title(r'$(z,k_{min})' + ' = ({:.1f}, {:.3f})$'.format(redshift, kmin))
+pl.savefig('plots/Fisher_z{:.0f}_kmin_{:.0f}'.format(redshift, 1000. * kmin))

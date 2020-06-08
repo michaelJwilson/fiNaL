@@ -5,7 +5,7 @@ import  matplotlib.pyplot  as      plt
 from    params             import  *
 from    growth             import  Dz
 from    linearPk           import  Plin
-from    samples            import  samples
+from    get_yaml           import  get_yaml
 
 
 ks, k2T = np.loadtxt('dat/k2Transfers.txt', unpack=True)
@@ -21,8 +21,10 @@ def pk_fnl(b, z, fnl):
 
 
 if __name__ == '__main__':
-    tracer = 'GRUSH24'
+    tracer  = 'GRUSH24'
 
+    samples = get_yaml('dat/samples.yml')
+    
     for k, v in samples[tracer].items():
         exec(k+'=v')
 

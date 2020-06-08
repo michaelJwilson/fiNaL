@@ -11,20 +11,20 @@ from   params             import *
 ##  https://ccl.readthedocs.io/_/downloads/en/latest/pdf/
 ##  https://github.com/LSSTDESC/CCL/blob/master/pyccl/halos/hmfunc.py
 
-fig, ax1 = plt.subplots()
-ax2      = ax1.twinx()
+fig, ax1  = plt.subplots()
+ax2       = ax1.twinx()
 
-cosmo    = pyccl.Cosmology(Omega_c=omch2/h/h, Omega_b=ombh2/h/h,
-                           h=h, n_s=ns, sigma8=0.8,
-                           transfer_function='bbks')
+cosmo     = pyccl.Cosmology(Omega_c=omch2/h/h, Omega_b=ombh2/h/h,
+                            h=h, n_s=ns, sigma8=0.8,
+                            transfer_function='bbks')
 
-colors   = plt.rcParams['axes.prop_cycle'].by_key()['color']
+colors    = plt.rcParams['axes.prop_cycle'].by_key()['color']
 
 ##  halo masses in units of M_sun.                                                                                                                      
-Ms       = 10. ** np.arange(10., 14., 0.05)
+Ms        = 10. ** np.arange(10., 14., 0.05)
 
-nbars    = [Ms]
-biases   = [Ms]
+nbars     = [Ms]
+biases    = [Ms]
 
 for zz, c in zip([2.0, 3.0, 4.0], colors):
     # pyccl.sigma8(cosmo)
