@@ -8,13 +8,23 @@ from    linearPk           import  Plin
 from    get_yaml           import  get_yaml
 
 
-ks, k2T = np.loadtxt('dat/k2Transfers.txt', unpack=True)
+def dbk(b, z, printit=False):
+    if z < 1.0:
+        raise ValueError('z < 1.0 is unsupported.')
 
-def dbk(b, z):
-    return  3. * (b - p) * dc * Om * H0**2 / c /c / k2T / Dz(z)
+    close   = np.around(z, decimals=1)    
+    dat     = np.loadtxt('dat/Transfers_z{}.txt'.format(np.int(100. * close)))
+
+    if printit:
+        print(z, close)
+    
+    ks      = dat[:,1]  # [1 . / Mpc]
+    Ts      = dat[:,8]  # Total transfer function, normalised to unity on large scales.  
+    
+    return  3. * (b - p) * dc * Om * H0**2 / c / c / ks / ks / Ts / Dz(z)
 
 def pk_fnl(b, z, fnl):
-    _, PP = Plin(z)
+    _, PP   = Plin(z)
 
     # Eqn. (5) of https://arxiv.org/pdf/0807.1770.pdf; requires linear DM power spectrum.
     return  PP * (b + dbk(b,z) * fnl)**2.
@@ -28,9 +38,9 @@ if __name__ == '__main__':
     for k, v in samples[tracer].items():
         exec(k+'=v')
 
-    _, PP = Plin(z)
-    Pk    = pk_fnl(b, z, fnl)
-        
+    ks, PP  = Plin(z)
+    Pk      = pk_fnl(b, z, fnl)
+         
     pl.axhline(1. / nz, xmin=0.0, xmax=1.0, c='k', lw=0.1)
 
     pl.loglog(ks, Pk, label=r'${} (z, b, \bar n) = ({}, {}, {:.1e})$'.format(tracer, z, b, nz))
@@ -47,6 +57,7 @@ if __name__ == '__main__':
 
     plt.tight_layout()
 
-    pl.savefig('plots/pk_fnl.pdf')
+    pl.show()
+    # pl.savefig('plots/pk_fnl.pdf')
     
     print('\n\nDone.\n\n')

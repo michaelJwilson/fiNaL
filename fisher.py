@@ -13,6 +13,7 @@ from    scipy.integrate    import  quad
 from    collections        import  OrderedDict
 
 
+# Redshift of both tracers. 
 redshift     = 2.0
 
 all_samples  = glob.glob('samples/{:.1f}/sample_*'.format(redshift))
@@ -25,21 +26,24 @@ kmins        = [0.001, 0.005, 0.01]
 
 for ii, kmin in enumerate(kmins):
  for pair in all_samples:
+  # Defines b1, b2,  nz1, nz2 etc. for the two tracers. 
   samples    = get_yaml(pair)
 
   def addtracer(tracer, tlabel=''):
     for k, v in samples[tracer].items():
-      gg = globals()
+      gg     = globals()
 
       gg.update({k+'{}'.format(tlabel): v})
 
-  tracers  = ['lomass', 'himass']
+  tracers  = ['himass', 'lomass']
 
   for i, tracer in enumerate(tracers):
     addtracer(tracer, i+1)
 
+  # Linear matter power spectrum at this redshift.
   ks, Ps   = Plin(z1)
 
+  # Pgg for the two tracers. 
   P1       = b1 * b1 * Ps
   P2       = b2 * b2 * Ps
 
@@ -62,7 +66,7 @@ for ii, kmin in enumerate(kmins):
 
   r        = b1 * b2 * Ps / np.sqrt(P1 + 1. / nz1) / np.sqrt(P2 + 1. / nz2)
 
-  #  Perfect cross-correlation.
+  #  Correlation coefficient of unity on all scales.
   r        = np.ones_like(r)
   
   # pl.clf()
@@ -72,10 +76,13 @@ for ii, kmin in enumerate(kmins):
   # pl.xlabel(r'$k [h/{\rm Mpc}]$')
   # pl.ylabel(r'$r$')
   # pl.savefig('plots/r.png')
-
-  ##
-  num        = (alpha * alpha * X2 + X1 )**2.
   
+  ##
+  num        = (alpha * alpha * X2 + X1 )**2. + 2. * (1. - r*r)*alpha*alpha*(alpha*alpha*(1. - r*r) + X2 + X1 * (1. + X2))
+  den        = 2. * P2 * P2 * (alpha * alpha * (1. - r*r) + alpha * alpha *X2 + X1 + X1 * X2)**2.
+
+  FPP        = num / den
+
   ## 
   num        = alpha * alpha * X2 * (1. + 2. * X2) + r * r * X1 * (1. + X2) + alpha * alpha * (1. - r * r) * (2. - r * r + 3. * X2)
 
@@ -84,13 +91,48 @@ for ii, kmin in enumerate(kmins):
 
   Faa        = num / den
 
+  ##
+  Lim_Faa    = alpha * alpha * X2 + X1 + alpha * alpha * (1. - r*r)
+  Lim_Faa    = 1. / Lim_Faa 
+  
+  # pl.loglog(ks,  X1)
+  # pl.loglog(ks,  X2)
+
+  # pl.loglog(ks, Faa)
+  # pl.loglog(ks, Lim_Faa)
+  
+  # pl.show() 
+  
   # Error on alpha = (b1 / b2).
   sig2       = 1. / Faa
   sig        = np.sqrt(sig2)
 
+  # Scale dependent biases with k for both tracers. 
   db1        = pk_fnl(b1, z1, fnl)
   db2        = pk_fnl(b2, z2, fnl)
 
+  pl.clf()
+  pl.loglog(ks, db1, label=r'$\Delta b_1(k)$')
+  pl.loglog(ks, db2, label=r'$\Delta b_2(k)$')
+  pl.loglog(ks, db1 / b1 - db2 / b2)
+  pl.legend(frameon=False, loc=1)
+  pl.show()
+
+  exit(0)
+  
+  # Fisher matrix for fnl from the relative amplitude of two tracers for a single mode. 
+  sigf       = (X2 + X1  / alpha / alpha + 1. - r*r)**0.5
+  sigf      /= (db1 / b1 - db2 / b2)
+
+  print(sigf)
+
+  pl.clf()
+  pl.loglog(ks,  sigf)
+  pl.show()
+  
+  exit(0)
+
+  
   integrand  = (db1 / b1) - (db2 / b2)
   integrand *= alpha * ks
   integrand  = integrand**2.

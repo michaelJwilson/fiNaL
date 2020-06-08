@@ -5,28 +5,30 @@ import pylab  as pl
 from   params import *
 
 
-dat     = np.loadtxt('dat/Pks.txt')
-ks      = dat[:,0]
-Ps      = dat[:,1:]
-
-infile  = open('dat/Pks.txt', 'r')
-hdr     = infile.readline()
-
-zs      = re.findall("\d+\.\d+", hdr)
-zs      = np.array(zs).astype(np.float)
-
-
-def Plin(z):
-    idx = (np.abs(zs - z)).argmin()
+def Plin(z, printit=False):
+    if z < 1.0:
+        raise ValueError('z < 1.0 is unsupported.')
     
-    return  ks, Ps[:, idx]
+    close = np.around(z, decimals=1)
+    dat   = np.loadtxt('dat/Transfers_z{}.txt'.format(np.int(100. * close)))
+
+    if printit:
+        print(z, close)
+    
+    ks    = dat[:, 0]
+    Ps    = dat[:,-1]
+    
+    return  ks, Ps
 
 
 if __name__ == '__main__':    
-    zz    = 4.00
+    for zz in [4.0, 3.0, 2.0, 1.0]:
+      k, Pk = Plin(zz, printit=True)
+      pl.loglog(k, Pk, label=r'$z={:.1f}$'.format(zz))
 
-    k, Pk = Plin(zz)
+    pl.xlim(1.e-3, 1.)
+    pl.ylim(10., 5.e4)
 
-    pl.loglog(k, Pk)
-
+    pl.legend(frameon=False)
+    
     pl.show()
