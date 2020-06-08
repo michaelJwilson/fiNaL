@@ -15,8 +15,8 @@ def Plin(z, printit=False):
     if printit:
         print(z, close)
     
-    ks    = dat[:, 0]
-    Ps    = dat[:,-1]
+    ks    = dat[:, 0]  ##  [h/Mpc]
+    Ps    = dat[:,-1]  ##  [(Mpc/h)^3]
     
     return  ks, Ps
 

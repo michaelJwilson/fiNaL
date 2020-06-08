@@ -111,27 +111,21 @@ for ii, kmin in enumerate(kmins):
   db1        = pk_fnl(b1, z1, fnl)
   db2        = pk_fnl(b2, z2, fnl)
 
-  pl.clf()
-  pl.loglog(ks, db1, label=r'$\Delta b_1(k)$')
-  pl.loglog(ks, db2, label=r'$\Delta b_2(k)$')
-  pl.loglog(ks, db1 / b1 - db2 / b2)
-  pl.legend(frameon=False, loc=1)
-  pl.show()
-
-  exit(0)
+  # pl.clf()
+  # pl.loglog(ks, db1, label=r'$\Delta b_1(k)$')
+  # pl.loglog(ks, db2, label=r'$\Delta b_2(k)$')
+  # pl.loglog(ks, db1 / b1 - db2 / b2)
+  # pl.legend(frameon=False, loc=1)
+  # pl.show()
   
   # Fisher matrix for fnl from the relative amplitude of two tracers for a single mode. 
   sigf       = (X2 + X1  / alpha / alpha + 1. - r*r)**0.5
   sigf      /= (db1 / b1 - db2 / b2)
 
-  print(sigf)
-
-  pl.clf()
-  pl.loglog(ks,  sigf)
+  pl.loglog(ks, sigf)
   pl.show()
   
   exit(0)
-
   
   integrand  = (db1 / b1) - (db2 / b2)
   integrand *= alpha * ks

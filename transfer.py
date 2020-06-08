@@ -54,8 +54,7 @@ for zz in np.arange(5.0, 0.9, -0.1):
 
   matter          = primordial * transfer_tot**2 * k**4 / (k**3/(2*np.pi**2))
 
-  # *********** ----  Pk has units of [Mpc^3]  ---- ***********.
-  _, zs, linpk    = results.get_linear_matter_power_spectrum(hubble_units=False)
+  _, zs, linpk    = results.get_linear_matter_power_spectrum(hubble_units=True, var1='delta_cdm', var2='delta_cdm')
 
   ##
   ##  DH          = 16. / Om / h  ## [Mpc/h]
@@ -69,6 +68,7 @@ for zz in np.arange(5.0, 0.9, -0.1):
 
   # plt.loglog(kh, lim)
 
+  ##  NOTE:  need hubble_units = False for this comparison.
   # plt.loglog(kh, matter, label='Transfer')
   # plt.loglog(kh, Pk[0,:], '--', label='Direct');
   # plt.xlabel(r'$k\, [h Mpc^{-1}]$');
@@ -80,7 +80,7 @@ for zz in np.arange(5.0, 0.9, -0.1):
   result          = result.T
   
   hdr             = 'k/h [h/Mpc]'.ljust(23) + 'k [1/Mpc]'.ljust(23) + 'Primoridal'.ljust(23) + ''.join(['T_{}(k)'.format(xx).ljust(25) for xx in ['cdm', 'bar', 'phot', 'massless neutrions', 'massive neutrinos', 'total']])
-  hdr            += 'Linear Pk [(Mpc)^-3]'.ljust(23)
+  hdr            += 'Linear Pk [(Mpc/h)^3]'.ljust(23)
 
   np.savetxt('dat/Transfers_z{}.txt'.format(np.int(100. * zz)), result, header=hdr)
 

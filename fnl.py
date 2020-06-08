@@ -23,11 +23,12 @@ def dbk(b, z, printit=False):
     
     return  3. * (b - p) * dc * Om * H0**2 / c / c / ks / ks / Ts / Dz(z)
 
-def pk_fnl(b, z, fnl):
-    _, PP   = Plin(z)
+def pk_fnl(b, z, fnl, printit=False):
+    # CDM power spectrum.
+    _, PP   = Plin(z, printit=printit)
 
     # Eqn. (5) of https://arxiv.org/pdf/0807.1770.pdf; requires linear DM power spectrum.
-    return  PP * (b + dbk(b,z) * fnl)**2.
+    return  PP * (b + fnl * dbk(b, z, printit=printit))**2.
 
 
 if __name__ == '__main__':
@@ -39,7 +40,7 @@ if __name__ == '__main__':
         exec(k+'=v')
 
     ks, PP  = Plin(z)
-    Pk      = pk_fnl(b, z, fnl)
+    Pk      = pk_fnl(b, z, fnl, printit=True)
          
     pl.axhline(1. / nz, xmin=0.0, xmax=1.0, c='k', lw=0.1)
 
@@ -48,7 +49,7 @@ if __name__ == '__main__':
     pl.loglog(ks,         PP)
 
     pl.xlabel(r'$k \ [h/{\rm Mpc}]$')
-    pl.ylabel(r'$P(k)$')
+    pl.ylabel(r'$P(k) \ [({\rm Mpc}/h)^3]$')
 
     pl.legend(frameon=False)
 
