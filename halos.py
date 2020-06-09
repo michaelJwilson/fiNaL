@@ -26,7 +26,7 @@ Ms        = 10. ** np.arange(10., 14., 0.05)
 nbars     = [Ms]
 biases    = [Ms]
 
-for zz, c in zip([2.0, 3.0, 4.0], colors):
+for zz, c in zip([1.0, 2.0, 3.0, 4.0], colors):
     # pyccl.sigma8(cosmo)
     # pyccl.comoving_radial_distance(cosmo, 1./(1+zz))
     # pyccl.nonlin_matter_power(cosmo, k=1, a=0.5)
@@ -49,7 +49,7 @@ for zz, c in zip([2.0, 3.0, 4.0], colors):
     ax2.semilogx(Ms, bs, c=c, alpha=0.5)
 
 header  = 'M [Msun]'.ljust(23)
-header += ''.join(['n(z={:.1f}) [(Mpc/h)^-3]'.format(zz).ljust(25) for zz in [2.0, 3.0, 4.0]])
+header += ''.join(['n(z={:.1f}) [(Mpc/h)^-3]'.format(zz).ljust(25) for zz in [1.0, 2.0, 3.0, 4.0]])
 
 nbars   = np.array(nbars).T
 biases  = np.array(biases).T
@@ -57,7 +57,7 @@ biases  = np.array(biases).T
 np.savetxt('dat/halo_nbar.txt',   nbars,  header=header)
 
 header  = 'M [Msun]'.ljust(23)
-header += ''.join(['b(z={:.1f})'.format(zz).ljust(25) for zz in [2.0, 3.0, 4.0]])
+header += ''.join(['b(z={:.1f})'.format(zz).ljust(25) for zz in [1.0, 2.0, 3.0, 4.0]])
 
 np.savetxt('dat/halo_biases.txt', biases, header=header)
 

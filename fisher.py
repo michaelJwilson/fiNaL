@@ -14,12 +14,17 @@ from    collections        import  OrderedDict
 
 
 # Redshift of both tracers. 
-redshift     = 2.0
+redshift     = 1.0
 
 all_samples  = glob.glob('samples/{:.1f}/sample_*'.format(redshift))
 
+assert  len(all_samples) > 0, print('Missing redshift.')
+ 
+
 # Sorting by creation date restores mass ordering. 
 all_samples.sort(key=os.path.getmtime)
+
+all_samples  = all_samples[::-1]
 
 kmax         = 0.1
 kmins        = [0.001, 0.005, 0.01]
@@ -32,7 +37,6 @@ for ii, kmin in enumerate(kmins):
   def addtracer(tracer, tlabel=''):
     for k, v in samples[tracer].items():
       gg     = globals()
-
       gg.update({k+'{}'.format(tlabel): v})
 
   tracers  = ['himass', 'lomass']
@@ -42,7 +46,7 @@ for ii, kmin in enumerate(kmins):
 
   # Linear matter power spectrum at this redshift.
   ks, Ps   = Plin(z1)
-
+  
   # Pgg for the two tracers. 
   P1       = b1 * b1 * Ps
   P2       = b2 * b2 * Ps
@@ -97,34 +101,44 @@ for ii, kmin in enumerate(kmins):
   
   # pl.loglog(ks,  X1)
   # pl.loglog(ks,  X2)
-
-  # pl.loglog(ks, Faa)
-  # pl.loglog(ks, Lim_Faa)
-  
-  # pl.show() 
   
   # Error on alpha = (b1 / b2).
   sig2       = 1. / Faa
-  sig        = np.sqrt(sig2)
+  siga       = np.sqrt(sig2)
 
+  lim_sig2   = 1. / Lim_Faa
+  lim_siga   = np.sqrt(lim_sig2)
+  
+  pl.clf()
+  pl.loglog(ks, siga)
+  pl.loglog(ks, lim_siga, label=r'$X_i \ll 1$')
+  pl.legend(frameon=False)
+
+  # pl.show()
+  # pl.savefig('plots/siga.pdf')
+
+  pl.clf()
+  
   # Scale dependent biases with k for both tracers. 
   db1        = pk_fnl(b1, z1, fnl)
   db2        = pk_fnl(b2, z2, fnl)
 
-  # pl.clf()
+  num        = (X2 + X1  / alpha / alpha + 1. - r * r)**0.5
+  den        = (db1 / b1 - db2 / b2)
+
+  sigf       = num / den
+  
+  pl.clf()
   # pl.loglog(ks, db1, label=r'$\Delta b_1(k)$')
   # pl.loglog(ks, db2, label=r'$\Delta b_2(k)$')
+  # pl.loglog(ks, )
   # pl.loglog(ks, db1 / b1 - db2 / b2)
-  # pl.legend(frameon=False, loc=1)
-  # pl.show()
-  
-  # Fisher matrix for fnl from the relative amplitude of two tracers for a single mode. 
-  sigf       = (X2 + X1  / alpha / alpha + 1. - r*r)**0.5
-  sigf      /= (db1 / b1 - db2 / b2)
 
-  pl.loglog(ks, sigf)
+  pl.loglog(ks, num, label='num')
+  pl.loglog(ks, den, label='den')
+  pl.legend(frameon=False, loc=1)
   pl.show()
-  
+    
   exit(0)
   
   integrand  = (db1 / b1) - (db2 / b2)

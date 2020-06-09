@@ -6,6 +6,7 @@ from    params             import  *
 from    growth             import  Dz
 from    linearPk           import  Plin
 from    get_yaml           import  get_yaml
+from    dbk                import  dbk
 
 
 def dbk(b, z, printit=False):
@@ -20,7 +21,7 @@ def dbk(b, z, printit=False):
     
     ks      = dat[:,1]  # [1 . / Mpc]
     Ts      = dat[:,8]  # Total transfer function, normalised to unity on large scales.  
-    
+
     return  3. * (b - p) * dc * Om * H0**2 / c / c / ks / ks / Ts / Dz(z)
 
 def pk_fnl(b, z, fnl, printit=False):
@@ -28,7 +29,26 @@ def pk_fnl(b, z, fnl, printit=False):
     _, PP   = Plin(z, printit=printit)
 
     # Eqn. (5) of https://arxiv.org/pdf/0807.1770.pdf; requires linear DM power spectrum.
-    return  PP * (b + fnl * dbk(b, z, printit=printit))**2.
+    return  PP * (b**2. + 2. * b * fnl * dbk(b, z, printit=printit) + (fnl * dbk(b, z, printit=printit))**2.)
+
+def phh(b, z, fnl):
+    # Eqn. (8) of https://arxiv.org/pdf/1408.3126.pdf;  Linear in delta b. 
+
+    if z < 1.0:
+        raise ValueError('z < 1.0 is unsupported.')
+
+    close   = np.around(z, decimals=1)
+    dat     = np.loadtxt('dat/Transfers_z{}.txt'.format(np.int(100. * close)))
+
+    khs     = dat[:,0]   # [h / Mpc]
+    ks      = dat[:,1]   # [1. / Mpc]                                                                                                                                                                                        
+    Ts      = dat[:,8]   # Total transfer function, normalised to unity on large scales.  
+    Ps      = dat[:,-1]  # Linear [(Mpc/h)^3]
+    
+    beta    = 2. * dc * (b - 1) 
+    alpha   = 2. * c * c * ks * ks * Ts * Dz(z) / 3. / Om / H0 / H0 
+
+    return  khs, Ps * (b * b + 2. * b * fnl * beta / alpha)
 
 
 if __name__ == '__main__':
@@ -48,6 +68,12 @@ if __name__ == '__main__':
     pl.loglog(ks, b * b * PP) 
     pl.loglog(ks,         PP)
 
+    #
+    kh, ps  = phh(b, z, fnl) 
+    pl.loglog(kh, ps, '--')
+    
+    pl.loglog(ks, dbk(b, z, printit=False), '--')
+    
     pl.xlabel(r'$k \ [h/{\rm Mpc}]$')
     pl.ylabel(r'$P(k) \ [({\rm Mpc}/h)^3]$')
 

@@ -18,10 +18,10 @@ import pylab as pl
 
 # *********** SURVEY PARAMS **********
 
-bg_L = 1.5          # Lagrangian bias
+bg_L = 1.5           # Lagrangian bias
 V = 25. * (1.e3)**3  # Survey Volume in Mpc^3 / h^3
-zm = 0.7            # Median redshift
-deltaP0oP0 = 0.2    # Fractional uncertainty on constant part of Power Spectrum
+zm = 0.7             # Median redshift
+deltaP0oP0 = 0.2     # Fractional uncertainty on constant part of Power Spectrum
 kmax = 0.1
 
 ####### DON't CHANGE ##################

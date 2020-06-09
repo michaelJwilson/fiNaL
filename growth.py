@@ -28,3 +28,4 @@ Dz             = interp1d(zs, Ds, kind='linear', copy=True, bounds_error=True)
 
 # Save growth rate to file. 
 np.savetxt('dat/growth.txt', np.c_[zs, Ds], header='Linear growth rate;  Normalised to (1+z) in matter domination.')
+

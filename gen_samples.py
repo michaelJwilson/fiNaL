@@ -9,7 +9,7 @@ from   scipy.interpolate import interp1d
 Ms       = np.logspace(10., 13., 20)
 pairs    = list(itertools.combinations(Ms, 2))
 
-redshift = 2.0
+redshift = 1.0
 
 nbars    = np.loadtxt('dat/halo_nbar.txt')
 

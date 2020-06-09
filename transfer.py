@@ -28,28 +28,29 @@ for zz in np.arange(5.0, 0.9, -0.1):
 
   kh              = trans.transfer_data[0,:,0]  ##  trans.transfer_z('k/h');  ##  [(Mpc/h)^-1].
   k               = kh * results.Params.h
-
+  k2              = k * k
+  
   # model.Transfer_cdm = 2
   transfer_cdm    = trans.transfer_data[2-1,:,0]
   transfer_cdm   /= transfer_cdm[0]
-
+  
   transfer_bar    = trans.transfer_data[3-1,:,0]
   transfer_bar   /= transfer_bar[0]
   
   transfer_phot   = trans.transfer_data[4-1,:,0]
   transfer_phot  /= transfer_phot[0]
-
+  
   # Massless.
   transfer_nut    = trans.transfer_data[5-1,:,0] 
   transfer_nut   /= transfer_nut[0]
-
+  
   # Massive
   transfer_nu     = trans.transfer_data[6-1,:,0]
   transfer_nu    /= transfer_nu[0]
-
+  
   transfer_tot    = trans.transfer_data[model.Transfer_tot-1,:,0] ##  trans.transfer_z('delta_tot') 
   transfer_tot   /= transfer_tot[0]
-
+  
   primordial      = results.Params.scalar_power(k)
 
   matter          = primordial * transfer_tot**2 * k**4 / (k**3/(2*np.pi**2))
