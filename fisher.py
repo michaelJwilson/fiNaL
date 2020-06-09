@@ -7,14 +7,14 @@ from    params             import  *
 from    growth             import  Dz
 from    linearPk           import  Plin
 from    get_yaml           import  get_yaml
-from    fnl                import  pk_fnl
+from    alpha              import  dbk
 from    scipy.interpolate  import  interp1d
 from    scipy.integrate    import  quad
 from    collections        import  OrderedDict
 
 
 # Redshift of both tracers. 
-redshift     = 1.0
+redshift     = 4.0
 
 all_samples  = glob.glob('samples/{:.1f}/sample_*'.format(redshift))
 
@@ -109,37 +109,35 @@ for ii, kmin in enumerate(kmins):
   lim_sig2   = 1. / Lim_Faa
   lim_siga   = np.sqrt(lim_sig2)
   
-  pl.clf()
-  pl.loglog(ks, siga)
-  pl.loglog(ks, lim_siga, label=r'$X_i \ll 1$')
-  pl.legend(frameon=False)
+  # pl.clf()
+  # pl.loglog(ks, siga)
+  # pl.loglog(ks, lim_siga, label=r'$X_i \ll 1$')
+  # pl.legend(frameon=False)
 
   # pl.show()
   # pl.savefig('plots/siga.pdf')
 
-  pl.clf()
+  # pl.clf()
   
   # Scale dependent biases with k for both tracers. 
-  db1        = pk_fnl(b1, z1, fnl)
-  db2        = pk_fnl(b2, z2, fnl)
+  db1        = dbk(b1, z1)
+  db2        = dbk(b2, z2)
 
   num        = (X2 + X1  / alpha / alpha + 1. - r * r)**0.5
   den        = (db1 / b1 - db2 / b2)
 
   sigf       = num / den
   
-  pl.clf()
+  # pl.clf()
   # pl.loglog(ks, db1, label=r'$\Delta b_1(k)$')
   # pl.loglog(ks, db2, label=r'$\Delta b_2(k)$')
   # pl.loglog(ks, )
   # pl.loglog(ks, db1 / b1 - db2 / b2)
 
-  pl.loglog(ks, num, label='num')
-  pl.loglog(ks, den, label='den')
-  pl.legend(frameon=False, loc=1)
-  pl.show()
-    
-  exit(0)
+  # pl.loglog(ks, num, label='num')
+  # pl.loglog(ks, den, label='den')
+  # pl.legend(frameon=False, loc=1)
+  # pl.show()
   
   integrand  = (db1 / b1) - (db2 / b2)
   integrand *= alpha * ks

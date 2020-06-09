@@ -9,7 +9,7 @@ from    params             import  *
 
 
 # Cell 48 of https://camb.readthedocs.io/en/latest/CAMBdemo.html
-for zz in np.arange(5.0, 0.9, -0.1):
+for zz in np.arange(5.0, -0.1, -0.1):
   print('Solving for z = {}'.format(zz))
 
   # Call CAMB.
@@ -77,11 +77,11 @@ for zz in np.arange(5.0, 0.9, -0.1):
   # pl.show()
   
   # [h/Mpc], [k].
-  result          = np.vstack((kh, k, primordial, transfer_cdm, transfer_bar, transfer_phot, transfer_nut, transfer_nu, transfer_tot, linpk[0,:]))
-  result          = result.T
+  result = np.vstack((kh, k, primordial, transfer_cdm, transfer_bar, transfer_phot, transfer_nut, transfer_nu, transfer_tot, linpk[0,:]))
+  result = result.T
   
-  hdr             = 'k/h [h/Mpc]'.ljust(23) + 'k [1/Mpc]'.ljust(23) + 'Primoridal'.ljust(23) + ''.join(['T_{}(k)'.format(xx).ljust(25) for xx in ['cdm', 'bar', 'phot', 'massless neutrions', 'massive neutrinos', 'total']])
-  hdr            += 'Linear Pk [(Mpc/h)^3]'.ljust(23)
+  hdr    = 'k/h [h/Mpc]'.ljust(23) + 'k [1/Mpc]'.ljust(23) + 'Primoridal'.ljust(23) + ''.join(['T_{}(k)'.format(xx).ljust(25) for xx in ['cdm', 'bar', 'phot', 'massless neutrions', 'massive neutrinos', 'total']])
+  hdr   += 'Linear Pk [(Mpc/h)^3]'.ljust(23)
 
   np.savetxt('dat/Transfers_z{}.txt'.format(np.int(100. * zz)), result, header=hdr)
 

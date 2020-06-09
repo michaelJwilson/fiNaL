@@ -9,8 +9,8 @@ from   get_yaml           import get_yaml
 redshift = 2.0
 results  = glob.glob('fishers/{:.1f}/*'.format(redshift))
 
-vmin     =   0.0
-vmax     =   3.0
+vmin     = 0.0
+vmax     = 3.0
 
 kmin     = 0.01
 
