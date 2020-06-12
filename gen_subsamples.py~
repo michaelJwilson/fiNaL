@@ -1,0 +1,54 @@
+import os
+import re
+import glob
+import yaml
+import numpy as np
+import itertools
+
+from   scipy.interpolate import interp1d
+from   get_schechters    import get_schechter
+from   get_yaml          import get_yaml
+from   get_schechters    import get_schechter
+from   get_halos         import get_halos
+
+
+redshift = 2.0
+sfactor  = 4.0
+
+files    = glob.glob('samples/{:.1f}/sampling_1/*.yml'.format(redshift))
+nfile    = len(files)
+
+xs       = get_schechter(redshift, reverse=False)
+
+deets    = {2.0: {'PhiStar': 0.02327, 'alpha': -1.32}, 3.0: {'PhiStar': 0.01762, 'alpha': -1.31}, 4.0: {'PhiStar': 0.00666, 'alpha': -1.43}}
+
+PhiStar  = deets[redshift]['PhiStar']
+alpha    = deets[redshift]['alpha']
+
+n2Ms, n2bs  = get_halos(redshift, reverse=True)
+
+for j in np.arange(0, nfile, 1):
+    fpath   = 'samples/{:.1f}/sampling_1/sample_{:d}.yml'.format(redshift, j)
+
+    samples = get_yaml(fpath)
+
+    result  = {'himass': {}, 'lomass': {}}
+    
+    for x in result.keys():
+        result[x]['z']      = np.float(samples[x]['z'])
+        result[x]['t']      = np.float(samples[x]['t'] * sfactor)
+        result[x]['L']      = np.float(1. / np.sqrt(result[x]['t']))
+        result[x]['phit']   = np.float(xs(result[x]['L']))
+        result[x]['nzloc']  = np.float(result[x]['phit'] * PhiStar)
+        result[x]['nz']     = np.float(result[x]['nzloc'] / sfactor)
+        result[x]['M']      = np.float(n2Ms(result[x]['nzloc']) / 1.e10)
+        result[x]['b']	    = np.float(n2bs(result[x]['nzloc']))
+        result[x]['expfac'] = np.float(sfactor)
+        
+    opath = 'samples/{:.1f}/sampling_{:d}/sample_{:d}.yml'.format(redshift, np.int(sfactor), j)
+        
+    with open(opath, 'w') as outfile:
+      yaml.dump(result, outfile, default_flow_style=False)
+
+    print('Loaded  {}'.format(fpath))
+    print('Written {}.'.format(opath))

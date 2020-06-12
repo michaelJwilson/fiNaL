@@ -1,0 +1,55 @@
+import re
+import pylab  as pl 
+import numpy  as np
+import pandas as pd
+
+from   scipy.integrate   import quad
+from   scipy.interpolate import interp1d
+
+
+nbars     = np.loadtxt('dat/halo_nbar.txt')
+
+infile    = open('dat/halo_nbar.txt', 'r')
+hdr       = infile.readline()
+
+zs        = re.findall("\d+\.\d+", hdr)
+zs        = np.array(zs).astype(np.float)
+
+# Solar masses, dn/dlnM(z) [(Mpc/h)^3].
+names     = ['Ms'] + zs.tolist()
+
+dat       = pd.read_csv('dat/halo_nbar.txt', sep='\s+', comment ='#', names=names)
+bat       = pd.read_csv('dat/halo_biases.txt', sep='\s+', comment ='#', names=names)
+
+lnMs      = np.log(dat['Ms'])
+
+for z in zs:
+  # dn/dln(M) [(Mpc/h)^3].
+  integrand  = interp1d(lnMs, dat[z], bounds_error=True)
+
+  bintegrand = interp1d(lnMs, dat[z] * bat[z], bounds_error=True)
+  
+  beffs      = []
+  ntildes    = []
+
+  for lnM in lnMs:
+    beffs.append(quad(bintegrand, lnM,  np.log(1.e13), limit=500)[0])
+    ntildes.append(quad(integrand, lnM,  np.log(1.e13), limit=500)[0])
+
+  beffs      = np.array(beffs)
+  ntildes    = np.array(ntildes)
+
+  beffs     /= ntildes
+
+  
+  pl.loglog(dat['Ms'], ntildes, label=r'$z={:.1f}$'.format(z))
+
+pl.xlim(1.e10, 1.e13)
+pl.ylim(1.e-6,   1.0)
+  
+pl.xlabel(r'$Limiting M_h \ [M_\odot]$')
+pl.ylabel(r'$\tilde n$')  
+
+pl.legend(frameon=False)
+
+pl.show()

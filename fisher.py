@@ -14,23 +14,21 @@ from    collections        import  OrderedDict
 
 
 # Redshift of both tracers. 
-redshift     = 4.0
+redshift     = 2.00
+sampling     =    2
 
-all_samples  = glob.glob('samples/{:.1f}/sample_*'.format(redshift))
+files        = glob.glob('samples/{:.1f}/sampling_{:d}/*.yml'.format(redshift, sampling))
+nfile        = len(files)
 
-assert  len(all_samples) > 0, print('Missing redshift.')
- 
-
-# Sorting by creation date restores mass ordering. 
-all_samples.sort(key=os.path.getmtime)
-
-all_samples  = all_samples[::-1]
+assert  nfile > 0, print('Missing redshift.')
 
 kmax         = 0.1
 kmins        = [0.001, 0.005, 0.01]
 
 for ii, kmin in enumerate(kmins):
- for pair in all_samples:
+ for isample in np.arange(0, nfile, 1):
+  pair       = 'samples/{:.1f}/sampling_{:d}/sample_{:d}.yml'.format(redshift, sampling, isample)
+
   # Defines b1, b2,  nz1, nz2 etc. for the two tracers. 
   samples    = get_yaml(pair)
 
@@ -116,7 +114,7 @@ for ii, kmin in enumerate(kmins):
 
   # pl.show()
   # pl.savefig('plots/siga.pdf')
-
+  
   # pl.clf()
   
   # Scale dependent biases with k for both tracers. 
@@ -170,7 +168,7 @@ for ii, kmin in enumerate(kmins):
   
   __                   = np.int(pair.split('_')[-1].replace('.yml', ''))
   
-  with open('fishers/{}/fisher_{:d}.yml'.format(redshift, __ + ii * len(all_samples)), 'w') as outfile:
+  with open('fishers/{:.1f}/sampling_{:d}/kmin_{:d}/sample_{}.yml'.format(redshift, sampling, np.int(1000. * kmin), isample), 'w') as outfile:
       yaml.dump(results, outfile, default_flow_style=False)
   
 print('\n\nDone.\n\n')

@@ -5,10 +5,13 @@ import matplotlib.pyplot as plt
 from   scipy.integrate   import quad
 
 
-alphas = np.arange(-2.0, -1.0, 0.2)
+alphas = np.arange(-2.0, -1.0, 0.1)
+alphas = np.concatenate([alphas, np.array([-1.31, -1.43])])
+alphas = np.sort(alphas)
 
 # x = L / L*
-xmins  = np.arange(0.05, 10., 0.05) 
+dx     = 5.e-5
+xmins  = np.arange(dx, 10., dx) 
 
 for x in np.arange(1, 6, 1):
     print('{:.4f} \t {:.4f}'.format(x, -2.5 * np.log10(x)))
@@ -16,7 +19,7 @@ for x in np.arange(1, 6, 1):
 def integrand(x, alpha):
     return  (x**alpha) * np.exp(-x) 
 
-output = [xmins]
+output = [xmins, 1. / xmins**2.]
 
 colors = plt.rcParams['axes.prop_cycle'].by_key()['color']
 
@@ -29,7 +32,7 @@ for t in [1.0, 0.5, 0.25, 0.1, 0.05]:
 
     plt.text(4.9, 1.05 * lvl, '{:.1f}'.format(np.around(base / lvl, 1)), horizontalalignment='right')
                
-for alpha, color in zip(alphas, colors):
+for i, alpha in enumerate(alphas):
     # y = Phi / Phi*
     ys   = []
     
@@ -40,20 +43,21 @@ for alpha, color in zip(alphas, colors):
       
     ys = np.array(ys)
 
-    pl.semilogy(xmins, ys, label=r'$\alpha={:.1f}$'.format(alpha))
+    pl.semilogy(xmins, ys, label=r'$\alpha={:.1f}$'.format(alpha), lw=0.5)
 
 output  = np.array(output).T
 
 header  = 'L / L*'.ljust(23)
-header += ''.join(['Phi(alpha={:.1f})/Phi*'.format(a).ljust(25) for a in alphas]) 
+header += 't / t*'.ljust(25)
+header += ''.join(['Phi(alpha={:.2f})/Phi*'.format(a).ljust(25) for a in alphas]) 
 
 np.savetxt('dat/schechters.txt', output, header=header)
 
 pl.xlabel(r'$L_{\rm lim} / L_*$')
 pl.ylabel(r'$\tilde \Phi / \Phi_*$')
 
-pl.xlim(0.05, 5.0)
-pl.ylim(5.e-4, 1.)
+#pl.xlim(0.05, 5.0)
+#pl.ylim(5.e-4, 1.)
 
 pl.legend(frameon=False, loc=1, ncol=3)
 
@@ -72,4 +76,4 @@ ax2.set_xlabel(r'$t_{\rm lim} / t_*$')
 
 plt.tight_layout()
 
-pl.savefig('plots/schechters.png')
+pl.savefig('plots/schechters.pdf')
